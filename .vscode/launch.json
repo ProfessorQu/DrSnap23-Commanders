@@ -16,7 +16,7 @@
             "name": "Commanders",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/commanders.py",
+            "program": "${workspaceFolder}/data/commanders.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }

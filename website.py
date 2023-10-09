@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from commanders import get_commanders
+from data.commanders import get_commanders
 import random
 
 app = Flask(__name__)

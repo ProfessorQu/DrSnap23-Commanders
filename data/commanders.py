@@ -2,14 +2,14 @@ import praw
 import sqlite3
 
 def get_connection():
-    connection = sqlite3.connect("database.db")
+    connection = sqlite3.connect("data/database.db")
     connection.row_factory = sqlite3.Row
     return connection
 
 def create_db():
     connection = get_connection()
 
-    with open("schema.sql") as file:
+    with open("data/schema.sql") as file:
         connection.executescript(file.read())
     
     connection.commit()
