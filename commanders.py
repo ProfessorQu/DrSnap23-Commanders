@@ -1,37 +1,73 @@
 import praw
+import sqlite3
 
-class Commander:
-    def __init__(self, name, img_url, post_url, is_un) -> None:
-        self.name = name
-        self.img_url = img_url
-        self.post_url = post_url
-        self.is_un = is_un
+def get_connection():
+    connection = sqlite3.connect("database.db")
+    connection.row_factory = sqlite3.Row
+    return connection
 
-def get_user():
+def create_db():
+    connection = get_connection()
+
+    with open("schema.sql") as file:
+        connection.executescript(file.read())
+    
+    connection.commit()
+    connection.close()
+
+def get_submissions(limit):
     reddit = praw.Reddit(
         client_id="9aTF-d-qd0g_Vu5Cixig1Q",
         client_secret="FR0EjUMB_54wCyHPK1S8rL2t26j3dA",
         user_agent="DrSnap23-Commanders"
     )
 
-    return reddit.redditor("DrSnap23")
+    user = reddit.redditor("DrSnap23")
 
-def get_commanders(user, limit=100):
-    submissions = []
+    return user.submissions.top(limit=limit, time_filter="all")
 
-    for submission in user.submissions.top(limit=limit, time_filter="all"):
-        title = submission.title
+def add_commander(submission, cur):
+    title = submission.title
 
-        if "Daily Commander" not in title:
-            continue
+    if "Daily Commander" not in title:
+       return 
 
-        name = title[title.rfind("/")+2:title.find("(")-1]
+    name = title[title.rfind("/")+2:title.find("(")-1]
 
-        commander = Commander(name, submission.url, submission.shortlink, "un-" in title.lower())
-        submissions.append(commander)
+    image_url = submission.url
+    post_url = submission.shortlink
+    is_un = "un-" in title.lower()
+
+    ups = submission.ups
+
+    cur.execute(
+        "INSERT INTO commanders (name, image_url, post_url, ups, is_un) VALUES (?, ?, ?, ?, ?)",
+        (name, image_url, post_url, ups, is_un)
+    )
+
+def save_commanders(limit=100):
+    connection = get_connection()
+    cur = connection.cursor()
+
+    for i, submission in enumerate(get_submissions(limit)):
+        add_commander(submission, cur)
+
+        if i % 100 == 0:
+            print(f"Working on commander {i}")
     
-    return submissions
+    print(f"===== Done, got: {i} commanders! ======")
 
-if __name__ == '__main__':
-    user = get_user()
-    commanders = get_commanders(user, limit=10)
+    connection.commit()
+    connection.close()
+
+def get_commanders():
+    connection = get_connection() 
+    commanders = connection.execute("SELECT * FROM commanders").fetchall()
+    connection.close()
+
+    return commanders
+    
+if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
+    create_db()
+
+    save_commanders(limit=2000)

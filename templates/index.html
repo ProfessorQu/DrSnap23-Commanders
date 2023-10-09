@@ -1,7 +1,27 @@
-<h1>DrSnap23's Commanders</h1>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="icon" href="https://styles.redditmedia.com/t5_1skbaa/styles/profileIcon_f6dduh223tq91.jpg">
+        <title>Dr Snap23's Commanders</title>
+    </head>
+    <body>
+        <h1>DrSnap23's Commanders</h1>
 
-{% for i in range(len) %}
-<a href="{{commanders[i].post_url}}" target="_blank">
-    <img src="{{commanders[i].img_url}}" width="300px"/>
-</a>
-{% endfor %}
+        <form method="post">
+            <input type="checkbox" name="show_un" onchange="this.form.submit()"
+            {% if show_un %}
+            checked
+            {% endif %}
+            >
+            <label>Show Un-cards</label>
+        </form>
+        <br>
+
+        {% for i in range(len) %}
+        <a href="{{ commanders[i]['post_url'] }}" target="_blank">
+            <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
+        </a>
+        {% endfor %}
+    </body>
+</html>
