@@ -1,3 +1,4 @@
+import time
 import praw
 import sqlite3
 import re
@@ -16,18 +17,19 @@ def create_db():
     connection.commit()
     connection.close()
 
-def get_submissions(limit):
+def get_user():
     reddit = praw.Reddit(
         client_id="9aTF-d-qd0g_Vu5Cixig1Q",
         client_secret="FR0EjUMB_54wCyHPK1S8rL2t26j3dA",
         user_agent="DrSnap23-Commanders"
     )
 
-    user = reddit.redditor("DrSnap23")
+    return reddit.redditor("DrSnap23")
 
+def get_submissions(user, limit):
     return user.submissions.top(limit=limit, time_filter="all")
 
-def add_commander(submission, cur):
+def add_commander(user, submission, cur):
     title = submission.title
 
     if "Daily Commander" not in title:
@@ -39,23 +41,38 @@ def add_commander(submission, cur):
     image_url = submission.url
     post_url = submission.shortlink
     is_un = "un-" in title.lower()
-
     ups = submission.ups
 
+    comments_text = ""
+
+    all_comments = submission.comments
+    all_comments.replace_more()
+    all_comments = all_comments.list()
+
+    for comment in all_comments:
+        if comment.author == user:
+            comments_text = comment.body_html
+            if len(comments_text) > 500:
+                break
+
     cur.execute(
-        "INSERT INTO commanders (name, image_url, post_url, ups, is_un) VALUES (?, ?, ?, ?, ?)",
-        (name, image_url, post_url, ups, is_un)
+        "INSERT INTO commanders (name, image_url, post_url, ups, is_un, comments_text) VALUES (?, ?, ?, ?, ?, ?)",
+        (name, image_url, post_url, ups, is_un, comments_text)
     )
 
 def save_commanders(limit=100):
     connection = get_connection()
     cur = connection.cursor()
 
-    for i, submission in enumerate(get_submissions(limit)):
-        if i % 10 == 0:
+    user = get_user()
+
+    for i, submission in enumerate(get_submissions(user, limit)):
+        if i % 100 == 0:
             print(f"Adding commander #{i}...")
 
-        add_commander(submission, cur)
+        add_commander(user, submission, cur)
+
+        time.sleep(0.01)
     
     print(f"===== Done, got: {i} commanders! ======")
 

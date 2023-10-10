@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from data.commanders import get_commanders
+from data.commanders import get_commanders, run_select_query
 import random
 import string
 
@@ -47,5 +47,17 @@ def index():
         order=session['order'],
         asc=session['asc']
     )
+
+@app.route("/<id>")
+def commander(id):
+    commander = run_select_query(f"SELECT * FROM commanders WHERE ID = {id}")
+
+    if len(commander) >= 1:
+        return render_template(
+            "commander.html",
+            commander=commander[0],
+        )
+    
+    return "FAILED"
 
 app.run(host="0.0.0.0", port=80)

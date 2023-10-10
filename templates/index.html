@@ -1,46 +1,41 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="icon" href="https://styles.redditmedia.com/t5_1skbaa/styles/profileIcon_f6dduh223tq91.jpg">
-        <title>Dr Snap23's Commanders</title>
-    </head>
-    <body>
-        <h1>DrSnap23's Commanders</h1>
+{% extends 'base.html' %}
 
-        <form method="post">
-            <label>Show Cards</label>
-            <select name="show_un" onchange="this.form.submit()">
-                <option value="all"     {% if show_un == "all" %}       selected {% endif %}>All</option>
-                <option value="un"      {% if show_un == "un" %}        selected {% endif %}>Un</option>
-                <option value="not_un"  {% if show_un == "not_un" %}    selected {% endif %}>Not Un</option>
-            </select>
+{% block title %}Dr Snap23's Commanders{% endblock %}
+{% block content %}
+    <h1>DrSnap23's Commanders</h1>
 
-            <label>Order by</label>
-            <select name="order" onchange="this.form.submit()">
-                <option value="ups"     {% if order == "ups" %}     selected {% endif %}>Upvotes</option>
-                <option value="name"    {% if order == "name" %}    selected {% endif %}>Name</option>
-            </select>
+    <form method="post">
+        <label>Show Cards</label>
+        <select name="show_un" onchange="this.form.submit()">
+            <option value="all"     {% if show_un == "all" %}       selected {% endif %}>All</option>
+            <option value="un"      {% if show_un == "un" %}        selected {% endif %}>Un</option>
+            <option value="not_un"  {% if show_un == "not_un" %}    selected {% endif %}>Not Un</option>
+        </select>
 
-            <select name="asc" onchange="this.form.submit()">
-                <option value="true"     {% if asc %}       selected {% endif %}>Ascending</option>
-                <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
-            </select>
+        <label>Order by</label>
+        <select name="order" onchange="this.form.submit()">
+            <option value="ups"     {% if order == "ups" %}     selected {% endif %}>Upvotes</option>
+            <option value="name"    {% if order == "name" %}    selected {% endif %}>Name</option>
+        </select>
 
-            <br>
-            <input name="first" type="submit" value="<<">
-            <input name="back" type="submit" value="<">
-            <input name="next" type="submit" value=">">
-            <input name="last" type="submit" value=">>">
-        </form>
+        <select name="asc" onchange="this.form.submit()">
+            <option value="true"     {% if asc %}       selected {% endif %}>Ascending</option>
+            <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
+        </select>
 
-        Page: {{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}
         <br>
+        <input name="first" type="submit" value="<<">
+        <input name="back" type="submit" value="<">
+        <input name="next" type="submit" value=">">
+        <input name="last" type="submit" value=">>">
+    </form>
 
-        {% for i in range(len) %}
-        <a href="{{ commanders[i]['post_url'] }}" target="_blank">
-            <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
-        </a>
-        {% endfor %}
-    </body>
-</html>
+    Page: {{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}
+    <br>
+
+    {% for i in range(len) %}
+    <a href="{{ commanders[i]['id'] }}" target="_blank">
+        <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
+    </a>
+    {% endfor %}
+{% endblock %}
