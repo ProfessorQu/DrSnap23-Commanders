@@ -26,7 +26,15 @@
                 <option value="true"     {% if asc %}       selected {% endif %}>Ascending</option>
                 <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
             </select>
+
+            <br>
+            <input name="first" type="submit" value="<<">
+            <input name="back" type="submit" value="<">
+            <input name="next" type="submit" value=">">
+            <input name="last" type="submit" value=">>">
         </form>
+
+        Page: {{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}
         <br>
 
         {% for i in range(len) %}

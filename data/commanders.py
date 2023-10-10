@@ -1,5 +1,6 @@
 import praw
 import sqlite3
+import re
 
 def get_connection():
     connection = sqlite3.connect("data/database.db")
@@ -32,8 +33,9 @@ def add_commander(submission, cur):
     if "Daily Commander" not in title:
        return 
 
-    name = title[title.rfind("/")+2:title.rfind("(")-1]
+    search = re.search(r"/ (.*) \(D", title)
 
+    name = search[0][2:-3] if search is not None else "__UNKWOWN__"
     image_url = submission.url
     post_url = submission.shortlink
     is_un = "un-" in title.lower()
@@ -50,10 +52,10 @@ def save_commanders(limit=100):
     cur = connection.cursor()
 
     for i, submission in enumerate(get_submissions(limit)):
-        add_commander(submission, cur)
+        if i % 10 == 0:
+            print(f"Adding commander #{i}...")
 
-        if i % 100 == 0:
-            print(f"Working on commander {i}")
+        add_commander(submission, cur)
     
     print(f"===== Done, got: {i} commanders! ======")
 
