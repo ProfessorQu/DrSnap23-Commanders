@@ -17,12 +17,11 @@ def index():
     )
 
     length = min(100, len(commanders))
-    random_commanders = commanders[:length]
-    # random_commanders = random.sample(legal_commanders, length)
+    current_commanders = commanders[:length]
 
     return render_template(
-        "index.html", len=len(random_commanders),
-        commanders=random_commanders,
+        "index.html", len=len(current_commanders),
+        commanders=current_commanders,
         show_un=show_un
     )
 
