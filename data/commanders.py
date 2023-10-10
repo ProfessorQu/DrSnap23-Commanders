@@ -32,7 +32,7 @@ def add_commander(submission, cur):
     if "Daily Commander" not in title:
        return 
 
-    name = title[title.rfind("/")+2:title.find("(")-1]
+    name = title[title.rfind("/")+2:title.rfind("(")-1]
 
     image_url = submission.url
     post_url = submission.shortlink
@@ -66,6 +66,19 @@ def run_select_query(query):
     connection.close()
 
     return commanders
+
+def get_commanders(show_un, order, asc):
+    query = "SELECT * FROM commanders "
+
+    if show_un != "all":
+        query += f"WHERE is_un = {show_un == 'un'} "
+
+    if order is None:
+        query += f"ORDER BY ups {'ASC' if asc else 'DESC'}"
+    else:
+        query += f"ORDER BY {order} {'ASC' if asc else 'DESC'}"
+
+    return run_select_query(query)
     
 if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
     create_db()

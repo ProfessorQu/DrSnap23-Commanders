@@ -9,12 +9,23 @@
         <h1>DrSnap23's Commanders</h1>
 
         <form method="post">
-            <input type="checkbox" name="show_un" onchange="this.form.submit()"
-            {% if show_un %}
-            checked
-            {% endif %}
-            >
-            <label>Show Un-cards</label>
+            <label>Show Cards</label>
+            <select name="show_un" onchange="this.form.submit()">
+                <option value="all"     {% if show_un == "all" %}       selected {% endif %}>All</option>
+                <option value="un"      {% if show_un == "un" %}        selected {% endif %}>Un</option>
+                <option value="not_un"  {% if show_un == "not_un" %}    selected {% endif %}>Not Un</option>
+            </select>
+
+            <label>Order by</label>
+            <select name="order" onchange="this.form.submit()">
+                <option value="ups"     {% if order == "ups" %}     selected {% endif %}>Upvotes</option>
+                <option value="name"    {% if order == "name" %}    selected {% endif %}>Name</option>
+            </select>
+
+            <select name="asc" onchange="this.form.submit()">
+                <option value="true"     {% if asc %}       selected {% endif %}>Ascending</option>
+                <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
+            </select>
         </form>
         <br>
 
