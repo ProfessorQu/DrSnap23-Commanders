@@ -1,21 +1,23 @@
 from flask import Flask, render_template, request
-from data.commanders import get_commanders
+from data.commanders import run_select_query
 import random
 
 app = Flask(__name__)
-
-if __name__ == '__main__':
-    commanders = get_commanders()
-    commanders.sort(key=lambda com: com['ups'], reverse=True)
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     show_un = request.form.get("show_un") != None
 
-    legal_commanders = [commander for commander in commanders if commander['is_un'] == show_un]
+    commanders = run_select_query(
+        f"""
+        SELECT * FROM commanders
+        WHERE is_un = {show_un}
+        ORDER BY ups DESC
+        """
+    )
 
-    length = min(100, len(legal_commanders))
-    random_commanders = legal_commanders[:length]
+    length = min(100, len(commanders))
+    random_commanders = commanders[:length]
     # random_commanders = random.sample(legal_commanders, length)
 
     return render_template(

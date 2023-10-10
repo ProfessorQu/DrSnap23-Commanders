@@ -60,9 +60,9 @@ def save_commanders(limit=100):
     connection.commit()
     connection.close()
 
-def get_commanders():
+def run_select_query(query):
     connection = get_connection() 
-    commanders = connection.execute("SELECT * FROM commanders").fetchall()
+    commanders = connection.execute(query).fetchall()
     connection.close()
 
     return commanders
