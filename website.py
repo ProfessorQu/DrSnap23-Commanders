@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 from data.commanders import Database
 import random
 import string
@@ -6,15 +6,28 @@ import string
 app = Flask(__name__)
 app.secret_key = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(50))
 
+with Database() as db:
+    all_commanders_len = len(db.run_query("SELECT * FROM commanders"))
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    session['show_un'] = request.form.get("show_un")
-    session['order'] = request.form.get("order")
-    session['asc'] = request.form.get("asc") == "true"
+    if request.method == "POST":
+        if request.form.get("random"):
+            commander_id = random.randint(0, all_commanders_len-1)
+            return redirect(url_for("commander", id=commander_id))
+
+        session['show_un'] = request.form.get("show_un")
+        session['order'] = request.form.get("order")
+        session['asc'] = request.form.get("asc") == "true"
+    else:
+        session['show_un'] = "all"
+        session['order'] = "ups"
+        session['asc'] = False
+
 
     with Database() as db:
         commanders = db.get_commanders(session['show_un'], session['order'], session['asc'])
+
     total_len = len(commanders)
 
     if 'cur_page' not in session:
@@ -30,7 +43,7 @@ def index():
         session['cur_page'] = 0
     elif request.form.get("last"):
         session['cur_page'] = (total_len // 100) * 100
-    
+
     if total_len <= session['cur_page']:
         session['cur_page'] = 0
 
@@ -39,7 +52,7 @@ def index():
     current_commanders = commanders[page:page+100]
 
     return render_template(
-        "index.html",
+        "search.html",
         len=len(current_commanders),
         commanders=current_commanders,
         total_len=total_len,
@@ -49,7 +62,7 @@ def index():
         asc=session['asc']
     )
 
-@app.route("/<id>")
+@app.route("/commander/<id>")
 def commander(id):
     with Database() as db:
         commander = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
