@@ -5,14 +5,12 @@
     <h1>DrSnap23's Commanders</h1>
 
     <form method="post">
-        <label>Show Cards</label>
         <select name="show_un" onchange="this.form.submit()">
             <option value="all"     {% if show_un == "all" %}       selected {% endif %}>All</option>
             <option value="un"      {% if show_un == "un" %}        selected {% endif %}>Un</option>
             <option value="not_un"  {% if show_un == "not_un" %}    selected {% endif %}>Not Un</option>
         </select>
 
-        <label>Order by</label>
         <select name="order" onchange="this.form.submit()">
             <option value="ups"     {% if order == "ups" %}     selected {% endif %}>Upvotes</option>
             <option value="name"    {% if order == "name" %}    selected {% endif %}>Name</option>
@@ -23,19 +21,20 @@
             <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
         </select>
 
-        <br>
-        <input name="first" type="submit" value="<<">
-        <input name="back" type="submit" value="<">
-        <input name="next" type="submit" value=">">
-        <input name="last" type="submit" value=">>">
+        <ul class="pages">
+            <li><input name="first" type="submit" value="<<"></li>
+            <li><input name="back" type="submit" value="<"></li>
+            <li>&ensp;{{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}&ensp;</li>
+            <li><input name="next" type="submit" value=">"></li>
+            <li><input name="last" type="submit" value=">>"></li>
+        </ul>
     </form>
 
-    Page: {{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}
-    <br>
-
-    {% for i in range(len) %}
-    <a href={{ url_for("commander", id=commanders[i]['id']) }}>
-        <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
-    </a>
-    {% endfor %}
+    <ul class="commanders">
+        {% for i in range(len) %}
+        <li><a href={{ url_for("commander", id=commanders[i]['id']) }}>
+            <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
+        </a></li>
+        {% endfor %}
+    </ul>
 {% endblock %}

@@ -1,31 +1,79 @@
 body {
-    background-color: aqua;
+    background-color: lightblue;
+    font-family: system-ui, sans-serif;
 }
 
-ul {
+select {
+    background-color: lightgreen;
+    border: none;
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+.commanders {
+    list-style-type: none;
+}
+
+.commanders img {
+    padding: 3px;
+}
+
+.commanders img:hover {
+    background-color:blue;
+}
+
+.pages {
+    list-style-type: none;
+    margin-top: 5px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.pages li {
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+.pages input {
+    background-color: lightgreen;
+    border-radius: 0%;
+    border: 0px;
+    width: 5%;
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+input:hover {
+    background-color: lightgray;
+}
+
+.navbar {
     list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: gray;
+    background-color: #BDE4A7;
 }
 
 li {
     display: inline;
-    float: left;
 }
 
-li a {
+.navbar li {
+    float:left;
+}
+
+.navbar li a {
     display: block;
     color: black;
     padding: 14px 16px;
     text-decoration: none;
 }
 
-li a:hover {
-    background-color: gold;
+.navbar li a:hover {
+    background-color: cadetblue;
 }
 
 .active {
-    background-color: goldenrod;
+    background-color: steelblue;
 }

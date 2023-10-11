@@ -7,7 +7,7 @@ CREATE TABLE commanders (
     post_url TEXT NOT NULL,
     ups INT NOT NULL,
     is_un BOOL NOT NULL,
-    author comment TEXT NOT NULL,
+    author_comment TEXT NOT NULL,
     mana_cost TEXT,
     type TEXT,
     oracle_text TEXT,

@@ -2,6 +2,7 @@ import time
 import praw
 import sqlite3
 import re
+import json
 
 class Database:
     def __init__(self):
@@ -14,7 +15,7 @@ class Database:
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.connection.close()
 
-    def create_db(self):
+    def reset(self):
         with open("data/schema.sql") as file:
             self.connection.executescript(file.read())
         
@@ -29,11 +30,11 @@ class Database:
 
         return reddit.redditor("DrSnap23")
 
-    def get_submissions(self, user, limit):
+    def get_posts(self, user, limit):
         return user.submissions.top(limit=limit, time_filter="all")
 
-    def add_commander(self, user, submission, cur):
-        title = submission.title
+    def add_commander(self, user, post, cur):
+        title = post.title
 
         if "Daily Commander" not in title:
             return 
@@ -41,14 +42,14 @@ class Database:
         search = re.search(r"/ (.*) \(D", title)
 
         name = search[0][2:-3] if search is not None else "__UNKWOWN__"
-        image_url = submission.url
-        post_url = submission.shortlink
+
+        post_url = post.shortlink
         is_un = "un-" in title.lower()
-        ups = submission.ups
+        ups = post.ups
 
         author_comment = ""
 
-        all_comments = submission.comments
+        all_comments = post.comments
         all_comments.replace_more()
         all_comments = all_comments.list()
 
@@ -58,21 +59,33 @@ class Database:
                 if len(author_comment) > 500:
                     break
 
-        cur.execute(
-            "INSERT INTO commanders (name, image_url, post_url, ups, is_un, author_comment) VALUES (?, ?, ?, ?, ?, ?)",
-            (name, image_url, post_url, ups, is_un, author_comment)
-        )
+
+        image_url = post.url
+        if "gallery" in image_url:
+            for image in post.media_metadata.items():
+                image_url = image[1]["p"][3]["u"]
+
+                cur.execute(
+                    "INSERT INTO commanders (name, image_url, post_url, ups, is_un, author_comment) VALUES (?, ?, ?, ?, ?, ?)",
+                    (name, image_url, post_url, ups, is_un, author_comment)
+                )
+        else:
+            cur.execute(
+                "INSERT INTO commanders (name, image_url, post_url, ups, is_un, author_comment) VALUES (?, ?, ?, ?, ?, ?)",
+                (name, image_url, post_url, ups, is_un, author_comment)
+            )
+
 
     def save_commanders(self, limit=100):
         cur = self.connection.cursor()
 
         user = self.get_user()
 
-        for i, submission in enumerate(self.get_submissions(user, limit)):
-            if i % 100 == 0:
+        for i, post in enumerate(self.get_posts(user, limit)):
+            if i % 10 == 0:
                 print(f"Adding commander #{i}...")
 
-            self.add_commander(user, submission, cur)
+            self.add_commander(user, post, cur)
         
         print(f"===== Done, got: {i} commanders! ======")
 
@@ -99,6 +112,5 @@ class Database:
     
 if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
     with Database() as db:
-        db.run_query("ALTER TABLE commanders RENAME COLUMN comments_text to author_comment")
-        # db.run_query("SELECT * FROM commanders")
-        # db.save_commanders(limit=2000)
+        db.reset()
+        db.save_commanders(limit=2000)
