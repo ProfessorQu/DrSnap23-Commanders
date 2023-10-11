@@ -1,5 +1,5 @@
 :root {
-    --image_height: 420px;
+    --image_height: 500px;
 }
 
 body {
@@ -38,10 +38,12 @@ h2 {
 
 .commanders {
     list-style-type: none;
+    padding: 0;
+    text-align: center;
 }
 
 .commanders img {
-    padding: 3px;
+    padding: 5px;
 }
 
 .commanders img:hover {
