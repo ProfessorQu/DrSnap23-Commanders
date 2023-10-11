@@ -1,5 +1,6 @@
 :root {
-    --image_width: 300px;
+    --image_height: 420px;
+    --image_width: calc((var(--image_height) / 3.5) * 2.5);
     --image_margin: 10px;
 }
 
@@ -16,7 +17,7 @@ select {
 }
 
 img {
-    width: var(--image_width);
+    height: var(--image_height);
 }
 
 .only_img {

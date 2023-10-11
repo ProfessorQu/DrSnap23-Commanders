@@ -63,6 +63,11 @@ class Database:
                 if len(author_comment) > 500:
                     break
 
+        author_comment = re.sub(r"(?:\*\*)(.*?)(?:\*\*)", r"<b>\1</b>", author_comment)
+        author_comment = re.sub(r"(?:\*)(.*?)(?:\*)", r"<i>\1</i>", author_comment)
+        author_comment = re.sub(r"(?:\[)(.*?)(?:\]\()(.*?)(?:\))", r"<a href=\2>\1</a>", author_comment)
+        author_comment = re.sub(r"\n", r"<br>", author_comment)
+
         image_url = post.url
         if "gallery" in image_url:
             for image in post.media_metadata.items():
@@ -89,7 +94,7 @@ class Database:
                 print(f"Adding commander #{i}...", end="\r")
 
             self.add_commander(user, post, cur)
-            time.sleep(0.01)
+            time.sleep(0.1)
         
         print(f"\n===== Done, got: {i} commanders! ======")
 
@@ -115,7 +120,7 @@ class Database:
 if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
     with Database() as db:
         db.reset()
-        db.save_commanders(limit=2000)
+        db.save_commanders(limit=None)
 
         # for commander in db.run_query("SELECT * FROM commanders"):
         #     comment = commander['author_comment']
