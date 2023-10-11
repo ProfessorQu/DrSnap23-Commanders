@@ -1,3 +1,8 @@
+:root {
+    --image_width: 300px;
+    --image_margin: 10px;
+}
+
 body {
     background-color: lightblue;
     font-family: system-ui, sans-serif;
@@ -11,7 +16,7 @@ select {
 }
 
 img {
-    width: 300px;
+    width: var(--image_width);
 }
 
 .only_img {
@@ -20,7 +25,7 @@ img {
 }
 
 .comment {
-    margin-left: 350px;
+    margin-left: calc(var(--image_width) + var(--image_margin));
     width: 70%;
     padding: 10px;
     background-color: lightskyblue;
