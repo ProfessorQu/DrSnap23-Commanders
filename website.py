@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, session
-from data.commanders import get_commanders, run_select_query
+from data.commanders import Database
 import random
 import string
 
@@ -13,7 +13,8 @@ def index():
     session['order'] = request.form.get("order")
     session['asc'] = request.form.get("asc") == "true"
 
-    commanders = get_commanders(session['show_un'], session['order'], session['asc'])
+    with Database() as db:
+        commanders = db.get_commanders(session['show_un'], session['order'], session['asc'])
     total_len = len(commanders)
 
     if 'cur_page' not in session:
@@ -50,7 +51,8 @@ def index():
 
 @app.route("/<id>")
 def commander(id):
-    commander = run_select_query(f"SELECT * FROM commanders WHERE ID = {id}")
+    with Database() as db:
+        commander = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
 
     if len(commander) >= 1:
         return render_template(
