@@ -10,6 +10,23 @@ select {
     font-family: system-ui, sans-serif;
 }
 
+img {
+    width: 300px;
+}
+
+.only_img {
+    float: left;
+    margin-right: 10px;
+}
+
+.comment {
+    margin-left: 350px;
+    width: 70%;
+    padding: 10px;
+    background-color: lightskyblue;
+    border: 3px solid whitesmoke;
+}
+
 .commanders {
     list-style-type: none;
 }

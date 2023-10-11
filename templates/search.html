@@ -24,7 +24,7 @@
         <ul class="pages">
             <li><input name="first" type="submit" value="<<"></li>
             <li><input name="back" type="submit" value="<"></li>
-            <li>&ensp;{{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}&ensp;</li>
+            <li>&ensp;{{ result_page // 100 + 1 }} /  {{ total_len // 100 + 1 }}&ensp;</li>
             <li><input name="next" type="submit" value=">"></li>
             <li><input name="last" type="submit" value=">>"></li>
         </ul>
@@ -33,7 +33,7 @@
     <ul class="commanders">
         {% for i in range(len) %}
         <li><a href={{ url_for("commander", id=commanders[i]['id']) }}>
-            <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
+            <img src="{{ commanders[i]['image_url'] }}"/>
         </a></li>
         {% endfor %}
     </ul>

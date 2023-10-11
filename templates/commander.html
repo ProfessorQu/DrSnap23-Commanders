@@ -4,11 +4,15 @@
 {% block content %}
     <h1>{{ commander['name'] }}</h1>
 
-    <img src="{{ commander['image_url'] }}" width="300px"/>
-    <br>
-    <a href="{{ commander['post_url'] }}" target="_blank">Reddit Post</a>
-    <br>
-    {% autoescape false %}
-    {{ commander['author_comment'] }}
-    {% endautoescape %}
+    <a href="{{ commander['post_url'] }}" target="_blank" class="only_img">
+        <img src="{{ commander['image_url'] }}"/>
+    </a>
+    <div class="comment">
+        <h3>Author's comment</h3>
+        <p>
+            {% autoescape false %}
+            {{ commander['author_comment'] }}
+            {% endautoescape %}
+        </p>
+    </div>
 {% endblock %}

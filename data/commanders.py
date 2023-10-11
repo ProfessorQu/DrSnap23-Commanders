@@ -5,11 +5,15 @@ import re
 import json
 
 class Database:
-    def __init__(self):
+    def open(self):
         self.connection = sqlite3.connect("data/database.db")
         self.connection.row_factory = sqlite3.Row
+
+    def close(self):
+        self.connection.close()
     
     def __enter__(self):
+        self.open()
         return self
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
@@ -55,10 +59,9 @@ class Database:
 
         for comment in all_comments:
             if comment.author == user:
-                author_comment = comment.body_html
+                author_comment = comment.body
                 if len(author_comment) > 500:
                     break
-
 
         image_url = post.url
         if "gallery" in image_url:
@@ -83,11 +86,12 @@ class Database:
 
         for i, post in enumerate(self.get_posts(user, limit)):
             if i % 10 == 0:
-                print(f"Adding commander #{i}...")
+                print(f"Adding commander #{i}...", end="\r")
 
             self.add_commander(user, post, cur)
+            time.sleep(0.01)
         
-        print(f"===== Done, got: {i} commanders! ======")
+        print(f"\n===== Done, got: {i} commanders! ======")
 
         self.connection.commit()
 
@@ -107,10 +111,19 @@ class Database:
 
         return self.run_query(query)
     
-    def close(self):
-        self.connection.close()
     
 if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
     with Database() as db:
         db.reset()
         db.save_commanders(limit=2000)
+
+        # for commander in db.run_query("SELECT * FROM commanders"):
+        #     comment = commander['author_comment']
+        #     comment = re.sub(r"(?:\[)(.*)(?:\]\()(.*?)(?:\))", r"<a href=\2>\1</a>", comment)
+
+        #     db.connection.execute(
+        #         "UPDATE commanders SET author_comment = ? WHERE ID = ?",
+        #         [comment, commander['id']]
+        #     )
+
+        # db.connection.commit()

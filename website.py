@@ -50,10 +50,11 @@ def index():
 
     return render_template(
         "search.html",
+        page="search",
         len=len(current_commanders),
         commanders=current_commanders,
         total_len=total_len,
-        page=page,
+        result_page=page,
         show_un=session['show_un'],
         order=session['order'],
         asc=session['asc']
@@ -64,7 +65,11 @@ def random_commander():
     commander_id = random.randint(0, all_commanders_len-1)
     return redirect(url_for("commander", id=commander_id))
 
-@app.route("/commander/<id>", methods=["GET", "POST"])
+@app.route("/about")
+def about():
+    return render_template("about.html", page="about")
+
+@app.route("/commander/<id>")
 def commander(id):
     with Database() as db:
         commander = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
