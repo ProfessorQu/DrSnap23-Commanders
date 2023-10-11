@@ -10,12 +10,9 @@ with Database() as db:
     all_commanders_len = len(db.run_query("SELECT * FROM commanders"))
 
 @app.route("/", methods=["GET", "POST"])
+@app.route("/index", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        if request.form.get("random"):
-            commander_id = random.randint(0, all_commanders_len-1)
-            return redirect(url_for("commander", id=commander_id))
-
         session['show_un'] = request.form.get("show_un")
         session['order'] = request.form.get("order")
         session['asc'] = request.form.get("asc") == "true"
@@ -62,7 +59,12 @@ def index():
         asc=session['asc']
     )
 
-@app.route("/commander/<id>")
+@app.route("/random")
+def random_commander():
+    commander_id = random.randint(0, all_commanders_len-1)
+    return redirect(url_for("commander", id=commander_id))
+
+@app.route("/commander/<id>", methods=["GET", "POST"])
 def commander(id):
     with Database() as db:
         commander = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")

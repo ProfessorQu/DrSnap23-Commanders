@@ -3,9 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <link rel="icon" href="https://styles.redditmedia.com/t5_1skbaa/styles/profileIcon_f6dduh223tq91.jpg">
+        <link rel="stylesheet" href={{ url_for("static", filename="stylesheet.css") }}>
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>
+        <ul>
+            <li><a href={{ url_for("index") }} class="active">Search</a></li>
+            <li><a href={{ url_for("random_commander") }}>Random</a></li>
+            <li style="float:right;"><a href="reddit.com">About</a></li>
+        </ul>
         {% block content %}{% endblock %}
     </body>
 </html>

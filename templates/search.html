@@ -30,15 +30,11 @@
         <input name="last" type="submit" value=">>">
     </form>
 
-    <form method="post">
-        <input type="submit" value="Random Commander" name="random">
-    </form>
-
     Page: {{ page // 100 + 1 }} /  {{ total_len // 100 + 1 }}
     <br>
 
     {% for i in range(len) %}
-    <a href="{{ commanders[i]['id'] }}" target="_blank">
+    <a href={{ url_for("commander", id=commanders[i]['id']) }}>
         <img src="{{ commanders[i]['image_url'] }}" width="300px"/>
     </a>
     {% endfor %}
