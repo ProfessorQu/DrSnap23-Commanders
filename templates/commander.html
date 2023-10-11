@@ -4,13 +4,16 @@
 {% block content %}
     <h1>{{ commander['name'] }}</h1>
 
-    <a href="{{ commander['post_url'] }}" target="_blank" class="only_img">
-        <img src="{{ commander['image_url'] }}"/>
+    <a href="{{ commander['post_url'] }}" target="_blank">
+        <img src="{{ commander['image_url'] }}" class="only_img">
     </a>
     <div class="comment">
         <h3>Author's comment</h3>
         <p>
-            {{ commander['author_comment'] }}
+            {% autoescape false %}
+                {{ commander['author_comment'] }}
+            {% endautoescape %}
         </p>
     </div>
+    <h2>Upvotes: {{ commander['ups'] }}</h2>
 {% endblock %}

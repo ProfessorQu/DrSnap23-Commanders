@@ -28,6 +28,11 @@
             <li><input name="next" type="submit" value=">"></li>
             <li><input name="last" type="submit" value=">>"></li>
         </ul>
+
+        <input type="text" name="name" placeholder="Name..." value={{ session['name'] }}>
+        <input type="submit" value="Search">
+
+        <p class="total_results">Total results: {{ total_len }}</p>
     </form>
 
     <ul class="commanders">

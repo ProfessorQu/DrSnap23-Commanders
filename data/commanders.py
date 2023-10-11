@@ -103,11 +103,15 @@ class Database:
     def run_query(self, query):
         return self.connection.execute(query).fetchall()
 
-    def get_commanders(self, show_un, order, asc):
+    def get_commanders(self, show_un, order, asc, name):
         query = "SELECT * FROM commanders "
 
         if show_un != "all":
-            query += f"WHERE is_un = {show_un == 'un'} "
+            query += f"WHERE is_un = {show_un == 'un'} "        
+            if name:
+                query += f"AND name LIKE '%{name}%'"
+        elif name:
+            query += f"WHERE name LIKE '%{name}%'"
 
         if order is None:
             query += f"ORDER BY ups {'ASC' if asc else 'DESC'}"

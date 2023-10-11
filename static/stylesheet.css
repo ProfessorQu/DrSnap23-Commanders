@@ -1,7 +1,5 @@
 :root {
     --image_height: 420px;
-    --image_width: calc((var(--image_height) / 3.5) * 2.5);
-    --image_margin: 10px;
 }
 
 body {
@@ -26,11 +24,16 @@ img {
 }
 
 .comment {
-    margin-left: calc(var(--image_width) + var(--image_margin));
-    width: 70%;
+    overflow: hidden;
+    max-width: 70%;
     padding: 10px;
     background-color: lightskyblue;
     border: 3px solid whitesmoke;
+}
+
+h2 {
+    position: absolute;
+    top: calc(var(--image_height) + 120px);
 }
 
 .commanders {
@@ -48,6 +51,7 @@ img {
 .pages {
     list-style-type: none;
     margin-top: 5px;
+    margin-bottom: 5px;
     padding: 0;
     overflow: hidden;
 }
@@ -57,13 +61,24 @@ img {
     font-family: system-ui, sans-serif;
 }
 
-.pages input {
+.total_results {
+    margin-top: 5px;
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+input[type="submit"] {
     background-color: lightgreen;
-    border-radius: 0%;
-    border: 0px;
+    border: none;
     width: 5%;
     font-size: large;
     font-family: system-ui, sans-serif;
+}
+
+input[type="text"] {
+    background-color: lightgreen;
+    border: none;
+    font-size: large;
 }
 
 input:hover {
