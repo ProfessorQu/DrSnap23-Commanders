@@ -10,12 +10,13 @@
         <ul class="navbar">
             <li><a href={{ url_for("index") }}
                 {% if page == "search" %}class="active"{% endif %}>
-                Search
+                <img src="https://pic.onlinewebfonts.com/thumbnails/icons_572392.svg">
             </a></li>
-            <li><a href={{ url_for("random_commander") }}>Random</a></li>
+            <li><a href={{ url_for("random_commander") }}><img src="https://pic.onlinewebfonts.com/thumbnails/icons_425382.svg"></a></li>
             <li style="float:right;"><a href={{ url_for("about") }}
                 {% if page == "about" %}class="active"{% endif %}>
-                About</a></li>
+                <img src="https://pic.onlinewebfonts.com/thumbnails/icons_213782.svg">
+            </a></li>
         </ul>
         {% block content %}{% endblock %}
     </body>

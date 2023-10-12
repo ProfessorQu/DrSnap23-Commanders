@@ -17,14 +17,16 @@ def index():
         session['order'] = request.form.get("order")
         session['asc'] = request.form.get("asc") == "true"
         session['name'] = request.form.get("name")
+        session['comment'] = request.form.get("comment")
     else:
         session['show_un'] = "all"
         session['order'] = "ups"
         session['asc'] = False
         session['name'] = ""
+        session['comment'] = ""
 
     with Database() as db:
-        commanders = db.get_commanders(session['show_un'], session['order'], session['asc'], session['name'])
+        commanders = db.get_commanders(session['show_un'], session['order'], session['asc'], session['name'], session['comment'])
 
     total_len = len(commanders)
 
@@ -56,10 +58,7 @@ def index():
         commanders=current_commanders,
         total_len=total_len,
         result_page=page,
-        show_un=session['show_un'],
-        order=session['order'],
-        asc=session['asc'],
-        name=session['name']
+        session=session,
     )
 
 @app.route("/random")

@@ -33,7 +33,7 @@ img {
 
 h2 {
     position: absolute;
-    top: calc(var(--image_height) + 120px);
+    top: calc(var(--image_height) + 135px);
 }
 
 .commanders {
@@ -93,6 +93,11 @@ input:hover {
     padding: 0;
     overflow: hidden;
     background-color: #BDE4A7;
+}
+
+.navbar img {
+    width: 70px;
+    height: 30px;
 }
 
 li {

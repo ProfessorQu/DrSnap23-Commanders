@@ -6,19 +6,19 @@
 
     <form method="post">
         <select name="show_un" onchange="this.form.submit()">
-            <option value="all"     {% if show_un == "all" %}       selected {% endif %}>All</option>
-            <option value="un"      {% if show_un == "un" %}        selected {% endif %}>Un</option>
-            <option value="not_un"  {% if show_un == "not_un" %}    selected {% endif %}>Not Un</option>
+            <option value="all"     {% if session['show_un'] == "all" %}       selected {% endif %}>All</option>
+            <option value="un"      {% if session['show_un'] == "un" %}        selected {% endif %}>Un</option>
+            <option value="not_un"  {% if session['show_un'] == "not_un" %}    selected {% endif %}>Not Un</option>
         </select>
 
         <select name="order" onchange="this.form.submit()">
-            <option value="ups"     {% if order == "ups" %}     selected {% endif %}>Upvotes</option>
-            <option value="name"    {% if order == "name" %}    selected {% endif %}>Name</option>
+            <option value="ups"     {% if session['order'] == "ups" %}     selected {% endif %}>Upvotes</option>
+            <option value="name"    {% if session['order'] == "name" %}    selected {% endif %}>Name</option>
         </select>
 
         <select name="asc" onchange="this.form.submit()">
-            <option value="true"     {% if asc %}       selected {% endif %}>Ascending</option>
-            <option value="false"    {% if not asc %}   selected {% endif %}>Descending</option>
+            <option value="true"     {% if session['asc'] %}       selected {% endif %}>Ascending</option>
+            <option value="false"    {% if not session['asc'] %}   selected {% endif %}>Descending</option>
         </select>
 
         <ul class="pages">
@@ -30,6 +30,7 @@
         </ul>
 
         <input type="text" name="name" placeholder="Name..." value={{ session['name'] }}>
+        <input type="text" name="comment" placeholder="Comment..." value={{ session['comment'] }}>
         <input type="submit" value="Search">
 
         <p class="total_results">Total results: {{ total_len }}</p>
