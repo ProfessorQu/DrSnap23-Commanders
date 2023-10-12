@@ -31,6 +31,13 @@
 
         <input type="text" name="name" placeholder="Name..." value="{{ session['name'] }}">
         <input type="text" name="comment" placeholder="Comment..." value="{{ session['comment'] }}">
+        <br>
+        <input type="text" name="type" placeholder="Type..." value="{{ session['type'] }}">
+        <input type="text" name="oracle_text" placeholder="Oracle Text..." value="{{ session['oracle_text'] }}">
+        <br>
+        <input type="text" name="power" placeholder="Power..." value="{{ session['power'] }}">
+        <input type="text" name="toughness" placeholder="Toughness..." value="{{ session['toughness'] }}">
+        <br>
         <input type="submit" value="Search">
 
         <p class="total_results">Total results: {{ total_len }}</p>

@@ -20,15 +20,28 @@ def index():
         session['asc'] = request.form.get("asc") == "true"
         session['name'] = request.form.get("name")
         session['comment'] = request.form.get("comment")
+        session['type'] = request.form.get("type")
+        session['oracle_text'] = request.form.get("oracle_text")
+        session['power'] = request.form.get("power")
+        session['toughness'] = request.form.get("toughness")
     else:
         session['show'] = "all"
         session['order'] = "ups"
         session['asc'] = False
         session['name'] = ""
         session['comment'] = ""
+        session['type'] = ""
+        session['oracle_text'] = ""
+        session['power'] = ""
+        session['toughness'] = ""
 
     with Database() as db:
-        commanders = db.get_commanders(session['show'], session['order'], session['asc'], session['name'], session['comment'])
+        commanders = db.get_commanders(
+            session['show'], session['order'], session['asc'],
+            session['name'], session['comment'], session['type'],
+            session['oracle_text'],
+            session['power'], session['toughness']
+        )
 
     total_len = len(commanders)
 

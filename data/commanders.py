@@ -109,7 +109,7 @@ class Database:
     def run_select_query(self, query):
         return self.connection.execute(query).fetchall()
 
-    def get_commanders(self, show, order, asc, name, comment):
+    def get_commanders(self, show, order, asc, name, comment, com_type, oracle_text, power, toughness):
         query = "SELECT * FROM commanders WHERE ID > -1 "
 
         if show != "all":
@@ -118,6 +118,14 @@ class Database:
             query += f"AND name LIKE '%{name}%' "
         if comment:
             query += f"AND author_comment LIKE '%{comment}%' "
+        if com_type:
+            query += f"AND type LIKE '%{com_type}%' "
+        if oracle_text:
+            query += f"AND oracle_text LIKE '%{oracle_text}%' "
+        if power:
+            query += f"AND power = {power} "
+        if toughness:
+            query += f"AND toughness = {toughness} "
 
         if order is None:
             query += f"ORDER BY ups {'ASC' if asc else 'DESC'}"

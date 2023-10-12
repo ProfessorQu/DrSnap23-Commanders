@@ -39,6 +39,7 @@ h2 {
 
 .update input {
     margin-top: 5px;
+    font-family: system-ui, sans-serif;
 }
 
 .update textarea {
@@ -99,14 +100,17 @@ h2 {
 input[type="submit"] {
     background-color: lightgreen;
     border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
     width: 5%;
     font-size: large;
-    font-family: system-ui, sans-serif;
 }
 
 input[type="text"] {
     background-color: lightgreen;
     border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: large;
 }
 
