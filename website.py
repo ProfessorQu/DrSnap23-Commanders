@@ -6,27 +6,29 @@ import string
 app = Flask(__name__)
 app.secret_key = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(50))
 
+COMMANDERS_PER_PAGE = 60
+
 with Database() as db:
-    all_commanders_len = len(db.run_query("SELECT * FROM commanders"))
+    all_commanders_len = len(db.run_select_query("SELECT * FROM commanders"))
 
 @app.route("/", methods=["GET", "POST"])
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        session['show_un'] = request.form.get("show_un")
+        session['show'] = request.form.get("show")
         session['order'] = request.form.get("order")
         session['asc'] = request.form.get("asc") == "true"
         session['name'] = request.form.get("name")
         session['comment'] = request.form.get("comment")
     else:
-        session['show_un'] = "all"
+        session['show'] = "all"
         session['order'] = "ups"
         session['asc'] = False
         session['name'] = ""
         session['comment'] = ""
 
     with Database() as db:
-        commanders = db.get_commanders(session['show_un'], session['order'], session['asc'], session['name'], session['comment'])
+        commanders = db.get_commanders(session['show'], session['order'], session['asc'], session['name'], session['comment'])
 
     total_len = len(commanders)
 
@@ -34,22 +36,22 @@ def index():
         session['cur_page'] = 0
 
     if request.form.get("back"):
-        if session['cur_page'] >= 100:
-            session['cur_page'] -= 100
+        if session['cur_page'] >= COMMANDERS_PER_PAGE:
+            session['cur_page'] -= COMMANDERS_PER_PAGE
     elif request.form.get("next"):
-        if session['cur_page'] <= total_len - 100:
-            session['cur_page'] += 100
+        if session['cur_page'] <= total_len - COMMANDERS_PER_PAGE:
+            session['cur_page'] += COMMANDERS_PER_PAGE
     elif request.form.get("first"):
         session['cur_page'] = 0
     elif request.form.get("last"):
-        session['cur_page'] = (total_len // 100) * 100
+        session['cur_page'] = (total_len // COMMANDERS_PER_PAGE) * COMMANDERS_PER_PAGE
 
     if total_len <= session['cur_page']:
         session['cur_page'] = 0
 
     page = session['cur_page']
 
-    current_commanders = commanders[page:page+100]
+    current_commanders = commanders[page:page+COMMANDERS_PER_PAGE]
 
     return render_template(
         "search.html",
@@ -59,24 +61,25 @@ def index():
         total_len=total_len,
         result_page=page,
         session=session,
+        commanders_per_page=COMMANDERS_PER_PAGE
     )
 
 @app.route("/random")
 def random_commander():
     commander_id = random.randint(0, all_commanders_len-1)
-    return redirect(url_for("commander", id=commander_id))
+    return redirect(url_for("commander", commander_id=commander_id))
 
 @app.route("/about")
 def about():
     return render_template("about.html", page="about")
 
-@app.route("/commander/<id>", methods=["GET", "POST"])
-def commander(id):
-    if request.method == "POST":
-        print(request.form.to_dict())
-
+@app.route("/commander/<commander_id>", methods=["GET", "POST"])
+def commander(commander_id):
     with Database() as db:
-        commanders = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
+        if request.method == "POST":
+            db.update_commander(commander_id, request.form.to_dict())
+
+        commanders = db.run_select_query(f"SELECT * FROM commanders WHERE ID = {commander_id}")
 
     if len(commanders) >= 1:
         commander = dict(commanders[0])

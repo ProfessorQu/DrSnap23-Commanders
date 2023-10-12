@@ -5,10 +5,10 @@
     <h1>DrSnap23's Commanders</h1>
 
     <form method="post">
-        <select name="show_un" onchange="this.form.submit()">
-            <option value="all"     {% if session['show_un'] == "all" %}       selected {% endif %}>All</option>
-            <option value="un"      {% if session['show_un'] == "un" %}        selected {% endif %}>Un</option>
-            <option value="not_un"  {% if session['show_un'] == "not_un" %}    selected {% endif %}>Not Un</option>
+        <select name="show" onchange="this.form.submit()">
+            <option value="all"     {% if session['show'] == "all" %}       selected {% endif %}>All</option>
+            <option value="un"      {% if session['show'] == "un" %}        selected {% endif %}>Un</option>
+            <option value="not_un"  {% if session['show'] == "not_un" %}    selected {% endif %}>Not Un</option>
         </select>
 
         <select name="order" onchange="this.form.submit()">
@@ -24,13 +24,13 @@
         <ul class="pages">
             <li><input name="first" type="submit" value="<<"></li>
             <li><input name="back" type="submit" value="<"></li>
-            <li>&ensp;{{ result_page // 100 + 1 }} /  {{ total_len // 100 + 1 }}&ensp;</li>
+            <li>&ensp;{{ result_page // commanders_per_page + 1 }} /  {{ total_len // commanders_per_page + 1 }}&ensp;</li>
             <li><input name="next" type="submit" value=">"></li>
             <li><input name="last" type="submit" value=">>"></li>
         </ul>
 
-        <input type="text" name="name" placeholder="Name..." value={{ session['name'] }}>
-        <input type="text" name="comment" placeholder="Comment..." value={{ session['comment'] }}>
+        <input type="text" name="name" placeholder="Name..." value="{{ session['name'] }}">
+        <input type="text" name="comment" placeholder="Comment..." value="{{ session['comment'] }}">
         <input type="submit" value="Search">
 
         <p class="total_results">Total results: {{ total_len }}</p>
@@ -38,7 +38,7 @@
 
     <ul class="commanders">
         {% for i in range(len) %}
-        <li><a href={{ url_for("commander", id=commanders[i]['id']) }}>
+        <li><a href={{ url_for("commander", commander_id=commanders[i]['id']) }}>
             <img src="{{ commanders[i]['image_url'] }}"/>
         </a></li>
         {% endfor %}

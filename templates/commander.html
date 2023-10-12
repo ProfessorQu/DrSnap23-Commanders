@@ -13,12 +13,12 @@
         <br>
         <input name="type" type="text" class="long" placeholder="Type..." value="{{ commander['type'] }}">
         <label>Is Un</label>
-        <input name="is_un" type="checkbox">
+        <input name="is_un" type="checkbox" {% if commander['is_un'] %} checked {% endif %}>
         <br>
-        <textarea name="oracle_text" placeholder="Oracle Text..." rows="6" value="{{ commander['oracle_text'] }}"></textarea>
+        <textarea name="oracle_text" placeholder="Oracle Text..." rows="6">{{ commander['oracle_text'] }}</textarea>
         <br>
         <input name="power" type="text" class="short" placeholder="Power..." value="{{ commander['power'] }}">
-        <input name="tough" type="text" class="short" placeholder="Toughness..." value="{{ commander['toughness'] }}">
+        <input name="toughness" type="text" class="short" placeholder="Toughness..." value="{{ commander['toughness'] }}">
 
         <br>
         <input type="submit" value="Update">

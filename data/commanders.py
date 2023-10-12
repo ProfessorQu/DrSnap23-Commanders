@@ -83,7 +83,6 @@ class Database:
                 (name, image_url, post_url, ups, is_un, author_comment)
             )
 
-
     def save_commanders(self, limit=100):
         cur = self.connection.cursor()
 
@@ -100,14 +99,21 @@ class Database:
 
         self.connection.commit()
 
-    def run_query(self, query):
+    def run_query(self, query, params=None):
+        if params is None:
+            params = []
+
+        self.connection.execute(query, params)
+        self.connection.commit()
+
+    def run_select_query(self, query):
         return self.connection.execute(query).fetchall()
 
-    def get_commanders(self, show_un, order, asc, name, comment):
+    def get_commanders(self, show, order, asc, name, comment):
         query = "SELECT * FROM commanders WHERE ID > -1 "
 
-        if show_un != "all":
-            query += f"AND is_un = {show_un == 'un'} "        
+        if show != "all":
+            query += f"AND is_un = {show == 'un'} "        
         if name:
             query += f"AND name LIKE '%{name}%' "
         if comment:
@@ -118,21 +124,35 @@ class Database:
         else:
             query += f"ORDER BY {order} {'ASC' if asc else 'DESC'}"
 
-        return self.run_query(query)
+        return self.run_select_query(query)
     
+    def update_commander(self, commander_id, inputs):
+        is_un = 'is_un' in inputs
+
+        query = "UPDATE commanders SET name = ?, is_un = ?, mana_cost = ?, type = ?, oracle_text = ?, power = ?, toughness = ? WHERE ID = ?"
+        params = [
+            inputs['name'], is_un, inputs['mana_cost'], inputs['type'],
+            inputs['oracle_text'], inputs['power'], inputs['toughness'],
+            commander_id
+        ]
+
+        self.run_query(query, params)
     
 if __name__ == '__main__' and input("Are you sure? This will delete all data. (yes/no) ").lower() == "yes":
     with Database() as db:
-        db.reset()
-        db.save_commanders(limit=None)
+        # db.reset()
+        # db.save_commanders(limit=None)
 
-        # for commander in db.run_query("SELECT * FROM commanders"):
-        #     comment = commander['author_comment']
-        #     comment = re.sub(r"(?:\[)(.*)(?:\]\()(.*?)(?:\))", r"<a href=\2>\1</a>", comment)
+        for commander in db.run_select_query("SELECT * FROM commanders"):
+            com_type = commander['type']
+            if com_type == "" or com_type is None:
+                db.run_query(f"UPDATE commanders SET type = 'Legendary Creature - ' WHERE ID = {commander['id']}")
+            # comment = commander['author_comment']
+            # comment = re.sub(r"(?:\[)(.*)(?:\]\()(.*?)(?:\))", r"<a href=\2>\1</a>", comment)
 
-        #     db.connection.execute(
-        #         "UPDATE commanders SET author_comment = ? WHERE ID = ?",
-        #         [comment, commander['id']]
-        #     )
+            # db.connection.execute(
+            #     "UPDATE commanders SET author_comment = ? WHERE ID = ?",
+            #     [comment, commander['id']]
+            # )
 
-        # db.connection.commit()
+        db.connection.commit()
