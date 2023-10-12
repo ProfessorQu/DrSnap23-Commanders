@@ -1,5 +1,6 @@
 :root {
     --image_height: 500px;
+    --image_width: calc((var(--image_height) / 3.5) * 2.5)
 }
 
 body {
@@ -34,6 +35,32 @@ img {
 h2 {
     position: absolute;
     top: calc(var(--image_height) + 135px);
+}
+
+.update input {
+    margin-top: 5px;
+}
+
+.update textarea {
+    margin-top: 5px;
+    width: var(--image_width);
+    background-color: lightgreen;
+    border: none;
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+.update label {
+    font-size: large;
+    font-family: system-ui, sans-serif;
+}
+
+.long {
+    width: 20%;
+}
+
+.short {
+    width: 7%;
 }
 
 .commanders {

@@ -7,6 +7,23 @@
     <a href="{{ commander['post_url'] }}" target="_blank">
         <img src="{{ commander['image_url'] }}" class="only_img">
     </a>
+    <form class="update" method="post">
+        <input name="name" type="text" class="long" placeholder="Name..." value="{{ commander['name'] }}">
+        <input name="mana_cost" type="text" class="short" placeholder="Mana Cost..." value="{{ commander['mana_cost'] }}">
+        <br>
+        <input name="type" type="text" class="long" placeholder="Type..." value="{{ commander['type'] }}">
+        <label>Is Un</label>
+        <input name="is_un" type="checkbox">
+        <br>
+        <textarea name="oracle_text" placeholder="Oracle Text..." rows="6" value="{{ commander['oracle_text'] }}"></textarea>
+        <br>
+        <input name="power" type="text" class="short" placeholder="Power..." value="{{ commander['power'] }}">
+        <input name="tough" type="text" class="short" placeholder="Toughness..." value="{{ commander['toughness'] }}">
+
+        <br>
+        <input type="submit" value="Update">
+    </form>
+    <br>
     <div class="comment">
         <h3>Author's comment</h3>
         <p>

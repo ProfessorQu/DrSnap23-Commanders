@@ -70,17 +70,25 @@ def random_commander():
 def about():
     return render_template("about.html", page="about")
 
-@app.route("/commander/<id>")
+@app.route("/commander/<id>", methods=["GET", "POST"])
 def commander(id):
-    with Database() as db:
-        commander = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
+    if request.method == "POST":
+        print(request.form.to_dict())
 
-    if len(commander) >= 1:
+    with Database() as db:
+        commanders = db.run_query(f"SELECT * FROM commanders WHERE ID = {id}")
+
+    if len(commanders) >= 1:
+        commander = dict(commanders[0])
+        for key in commander:
+            if commander[key] is None:
+                commander[key] = ""
+
         return render_template(
             "commander.html",
-            commander=commander[0],
+            commander=commander,
         )
-    
+
     return "FAILED"
 
 app.run(host="0.0.0.0", port=80)
