@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from data.commanders import Database
 import random
-import string
+import secrets
 
 app = Flask(__name__)
-app.secret_key = "".join(random.choice(string.ascii_letters + string.digits) for _ in range(50))
+app.secret_key = secrets.token_hex()
 
-COMMANDERS_PER_PAGE = 60
+COMMANDERS_PER_PAGE = 30
 
 with Database() as db:
     all_commanders_len = len(db.run_select_query("SELECT * FROM commanders"))
@@ -107,4 +107,4 @@ def commander(commander_id):
 
     return "FAILED"
 
-app.run(host="0.0.0.0", port=80)
+app.run(host="0.0.0.0", port=4321)
