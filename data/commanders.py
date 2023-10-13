@@ -117,11 +117,13 @@ class Database:
         if name:
             query += f"AND name LIKE '%{name}%' "
         if comment:
-            query += f"AND author_comment LIKE '%{comment}%' "
+            for word in comment.split(" "):
+                query += f"AND author_comment LIKE '%{word}%' "
         if com_type:
             query += f"AND type LIKE '%{com_type}%' "
         if oracle_text:
-            query += f"AND oracle_text LIKE '%{oracle_text}%' "
+            for word in oracle_text.split(" "):
+                query += f"AND oracle_text LIKE '%{word}%' "
         if power:
             query += f"AND power = {power} "
         if toughness:
@@ -152,9 +154,10 @@ if __name__ == '__main__' and input("Are you sure? This will delete all data. (y
         # db.save_commanders(limit=None)
 
         for commander in db.run_select_query("SELECT * FROM commanders"):
-            com_type = commander['type']
-            if com_type == "" or com_type is None:
-                db.run_query(f"UPDATE commanders SET type = 'Legendary Creature - ' WHERE ID = {commander['id']}")
+            print(commander['image_url'])
+            # com_type = commander['type']
+            # if com_type == "" or com_type is None:
+            #     db.run_query(f"UPDATE commanders SET type = 'Legendary Creature - ' WHERE ID = {commander['id']}")
             # comment = commander['author_comment']
             # comment = re.sub(r"(?:\[)(.*)(?:\]\()(.*?)(?:\))", r"<a href=\2>\1</a>", comment)
 
@@ -163,4 +166,4 @@ if __name__ == '__main__' and input("Are you sure? This will delete all data. (y
             #     [comment, commander['id']]
             # )
 
-        db.connection.commit()
+        # db.connection.commit()
