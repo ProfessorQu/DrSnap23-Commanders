@@ -2,9 +2,13 @@ from flask import Flask, render_template, request, session, redirect, url_for
 from data.commanders import Database
 import random
 import secrets
+import logging
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex()
+
+logger = logging.getLogger("werkzeug")
+logger.setLevel(logging.ERROR)
 
 COMMANDERS_PER_PAGE = 30
 
