@@ -35,7 +35,8 @@ def index():
             session[var] = request.form.get(var)
     else:
         for var, default in SEARCH_VARS.items():
-            session[var] = default
+            if var not in session:
+                session[var] = default
 
     with Database() as db:
         commanders = db.get_commanders(session)
@@ -44,24 +45,26 @@ def index():
 
     if 'cur_page' not in session:
         session['cur_page'] = 0
-
-    if request.form.get("back"):
-        if session['cur_page'] >= COMMANDERS_PER_PAGE:
-            session['cur_page'] -= COMMANDERS_PER_PAGE
-    elif request.form.get("next"):
-        if session['cur_page'] <= total_len - COMMANDERS_PER_PAGE:
-            session['cur_page'] += COMMANDERS_PER_PAGE
-    elif request.form.get("first"):
-        session['cur_page'] = 0
-    elif request.form.get("last"):
-        session['cur_page'] = (total_len // COMMANDERS_PER_PAGE) * COMMANDERS_PER_PAGE
-
-    if total_len <= session['cur_page']:
-        session['cur_page'] = 0
-
+    
     page = session['cur_page']
 
+    if request.form.get("back"):
+        if page >= COMMANDERS_PER_PAGE:
+            page -= COMMANDERS_PER_PAGE
+    elif request.form.get("next"):
+        if page <= total_len - COMMANDERS_PER_PAGE:
+            page += COMMANDERS_PER_PAGE
+    elif request.form.get("first"):
+        page = 0
+    elif request.form.get("last"):
+        page = (total_len // COMMANDERS_PER_PAGE) * COMMANDERS_PER_PAGE
+
+    if page > total_len:
+        page = 0
+
     current_commanders = commanders[page:page+COMMANDERS_PER_PAGE]
+
+    session['cur_page'] = page
 
     return render_template(
         "search.html",
