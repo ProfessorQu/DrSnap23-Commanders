@@ -76,6 +76,7 @@ select {
 
 .single-com-img img {
     border-radius: var(--image-border-radius);
+    height: var(--image-height);
 }
 
 .author-comment {
