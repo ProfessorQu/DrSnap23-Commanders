@@ -4,7 +4,7 @@
 {% block content %}
     <h1>DrSnap23's Commanders</h1>
 
-    <form method="post">
+    <form id="search" method="post">
         <select name="show" onchange="this.form.submit()">
             <option value="all"     {% if session['show'] == "all" %}       selected {% endif %}>All</option>
             <option value="un"      {% if session['show'] == "un" %}        selected {% endif %}>Un</option>
@@ -20,14 +20,7 @@
             <option value="true"     {% if session['asc'] %}       selected {% endif %}>Ascending</option>
             <option value="false"    {% if not session['asc'] %}   selected {% endif %}>Descending</option>
         </select>
-
-        <ul class="pages">
-            <li><input name="first" type="submit" value="<<"></li>
-            <li><input name="back" type="submit" value="<"></li>
-            <li>&ensp;{{ result_page // commanders_per_page + 1 }} /  {{ total_len // commanders_per_page + 1 }}&ensp;</li>
-            <li><input name="next" type="submit" value=">"></li>
-            <li><input name="last" type="submit" value=">>"></li>
-        </ul>
+        <br>
 
         <input type="text" name="name" placeholder="Name..." value="{{ session['name'] }}">
         <input type="text" name="comment" placeholder="Comment..." value="{{ session['comment'] }}">
@@ -35,19 +28,37 @@
         <input type="text" name="type" placeholder="Type..." value="{{ session['type'] }}">
         <input type="text" name="oracle_text" placeholder="Oracle Text..." value="{{ session['oracle_text'] }}">
         <br>
-        <input type="text" name="power" placeholder="Power..." value="{{ session['power'] }}">
-        <input type="text" name="toughness" placeholder="Toughness..." value="{{ session['toughness'] }}">
+        <input type="text" class="short" name="power" placeholder="Power..." value="{{ session['power'] }}">
+        <input type="text" class="short" name="toughness" placeholder="Toughness..." value="{{ session['toughness'] }}">
         <br>
         <input type="submit" value="Search">
 
-        <p class="total_results">Total results: {{ total_len }}</p>
+        <ul class="page-navigation">
+            <li><input name="first" type="submit" value="<<"></li>
+            <li><input name="back" type="submit" value="<"></li>
+            <li>&ensp;{{ result_page // commanders_per_page + 1 }} /  {{ total_len // commanders_per_page + 1 }}&ensp;</li>
+            <li><input name="next" type="submit" value=">"></li>
+            <li><input name="last" type="submit" value=">>"></li>
+        </ul>
+
+        <h2>Total results: {{ total_len }}</h2>
     </form>
 
-    <ul class="commanders">
+    <div class="com-list">
         {% for i in range(len) %}
-        <li><a href={{ url_for("commander", commander_id=commanders[i]['id']) }}>
-            <img src="{{ commanders[i]['image_url'] }}"/>
-        </a></li>
+        <a href={{ url_for("commander", commander_id=commanders[i]['id']) }}>
+            <img class="com-img" src="{{ commanders[i]['image_url'] }}"/>
+        </a>
         {% endfor %}
-    </ul>
+    </div>
+
+    <form method="post">
+        <ul class="page-navigation">
+            <li><input name="first" type="submit" value="<<"></li>
+            <li><input name="back" type="submit" value="<"></li>
+            <li>&ensp;{{ result_page // commanders_per_page + 1 }} /  {{ total_len // commanders_per_page + 1 }}&ensp;</li>
+            <li><input name="next" type="submit" value=">"></li>
+            <li><input name="last" type="submit" value=">>"></li>
+        </ul>
+    </form>
 {% endblock %}

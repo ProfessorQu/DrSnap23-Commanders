@@ -4,14 +4,17 @@
 {% block content %}
     <h1>{{ commander['name'] }}</h1>
 
-    <a href="{{ commander['post_url'] }}" target="_blank">
-        <img src="{{ commander['image_url'] }}" class="only_img">
-    </a>
-    <form class="update" method="post">
-        <input name="name" type="text" class="long" placeholder="Name..." value="{{ commander['name'] }}">
+    <div class="single-com-img">
+        <a href="{{ commander['post_url'] }}" target="_blank">
+            <img class="com-img" src="{{ commander['image_url'] }}">
+        </a>
+        <h2><img id="upvote" src="https://pic.onlinewebfonts.com/thumbnails/icons_518334.svg">{{ commander['ups'] }}</h2>
+    </div>
+    <form class="update-com" method="post">
+        <input name="name" type="text" placeholder="Name..." value="{{ commander['name'] }}">
         <input name="mana_cost" type="text" class="short" placeholder="Mana Cost..." value="{{ commander['mana_cost'] }}">
         <br>
-        <input name="type" type="text" class="long" placeholder="Type..." value="{{ commander['type'] }}">
+        <input name="type" type="text" placeholder="Type..." value="{{ commander['type'] }}">
         <label>Is Un</label>
         <input name="is_un" type="checkbox" {% if commander['is_un'] %} checked {% endif %}>
         <br>
@@ -24,13 +27,12 @@
         <input type="submit" value="Update">
     </form>
     <br>
-    <div class="comment">
+    <div class="author-comment">
         <h3>Author's comment</h3>
         <p>
             {% autoescape false %}
-                {{ commander['author_comment'] }}
+            {{ commander['author_comment'] }}
             {% endautoescape %}
         </p>
     </div>
-    <h2>Upvotes: {{ commander['ups'] }}</h2>
 {% endblock %}

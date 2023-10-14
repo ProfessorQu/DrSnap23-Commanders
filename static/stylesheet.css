@@ -1,121 +1,117 @@
 :root {
-    --image_height: 500px;
-    --image_width: calc((var(--image_height) / 3.5) * 2.5)
+    --image-height: 500px;
+    --image-width: calc((var(--image-height) / 3.5) * 2.5);
+    --image-padding: 0.5em;
+    --image-border-radius: 25px;
 }
 
+
 body {
-    background-color: lightblue;
+    background: linear-gradient(to top, lightgreen, lightblue);
+    min-height: 100vh;
     font-family: system-ui, sans-serif;
+}
+
+input {
+    font-family: system-ui, sans-serif;
+    font-size: large;
+    margin-top: 0.1em;
+    background: lightcyan;
+    border: none;
+}
+
+input[type=submit]:hover {
+    background: cyan;
 }
 
 select {
-    background-color: lightgreen;
-    border: none;
-    font-size: large;
     font-family: system-ui, sans-serif;
+    font-size: large;
+    margin-top: 0.1em;
+    background: lightcyan;
+    border: none;
 }
 
-img {
-    height: var(--image_height);
+.com-img {
+    height: var(--image-height);
+    width: var(--image-width);
+    /* object-fit: cover;
+    object-position: 0%; */
 }
 
-.only_img {
+.com-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, calc(var(--image-width) + 2 * var(--image-padding)));
+    width: 100%;
+}
+
+.com-list a {
+    text-decoration: none;
+}
+
+.com-list img {
+    padding: var(--image-padding);
+    border-radius: var(--image-border-radius);
+}
+
+.com-list img:hover {
+    padding: 0;
+    width: calc(var(--image-width) + 2 * var(--image-padding));
+    height: calc(var(--image-height) + 2 * var(--image-padding));
+    filter: drop-shadow(0 0 1em black)
+}
+
+.single-com-img {
     float: left;
-    margin-right: 10px;
 }
 
-.comment {
+.single-com-img h2 {
+    margin: 0;
+}
+
+.single-com-img #upvote {
+    height: 1em;
+    width: 1em;
+}
+
+.single-com-img img {
+    border-radius: var(--image-border-radius);
+}
+
+.author-comment {
     overflow: hidden;
-    max-width: 70%;
-    padding: 10px;
-    background-color: lightskyblue;
-    border: 3px solid whitesmoke;
+    margin-left: calc(var(--image-width) + 1em);
+    max-width: 50%;
 }
 
-h2 {
-    position: absolute;
-    top: calc(var(--image_height) + 135px);
+.update-com {
+    margin-left: calc(var(--image-width) + 1em);
 }
 
-.update input {
-    margin-top: 5px;
+.update-com input {
+    min-width: 20em;
+}
+
+.update-com textarea {
     font-family: system-ui, sans-serif;
-}
-
-.update textarea {
-    margin-top: 5px;
-    width: var(--image_width);
-    background-color: lightgreen;
+    min-width: 25em;
+    min-height: 10em;
+    font-size: large;
+    margin-top: 0.15em;
+    background: lightcyan;
     border: none;
-    font-size: large;
-    font-family: system-ui, sans-serif;
 }
 
-.update label {
-    font-size: large;
-    font-family: system-ui, sans-serif;
+.update-com input[type=submit] {
+    min-width: 0;
 }
 
-.long {
-    width: 20%;
-}
+.update-com input[type=checkbox] {
+    min-width: 0;
+} 
 
 .short {
-    width: 7%;
-}
-
-.commanders {
-    list-style-type: none;
-    padding: 0;
-    text-align: center;
-}
-
-.commanders img {
-    padding: 5px;
-}
-
-.commanders img:hover {
-    background-color:blue;
-}
-
-.pages {
-    list-style-type: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding: 0;
-    overflow: hidden;
-}
-
-.pages li {
-    font-size: large;
-    font-family: system-ui, sans-serif;
-}
-
-.total_results {
-    margin-top: 5px;
-    font-size: large;
-    font-family: system-ui, sans-serif;
-}
-
-input[type="submit"] {
-    background-color: lightgreen;
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 5%;
-    font-size: large;
-}
-
-input[type="text"] {
-    background-color: lightgreen;
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: large;
-}
-
-input:hover {
-    background-color: lightgray;
+    min-width: 10em;
 }
 
 .navbar {
@@ -123,12 +119,12 @@ input:hover {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #BDE4A7;
+    background-color: lightgreen;
 }
 
 .navbar img {
-    width: 70px;
-    height: 30px;
+    width: 5em;
+    height: 3em;
 }
 
 li {
@@ -141,15 +137,31 @@ li {
 
 .navbar li a {
     display: block;
-    color: black;
-    padding: 14px 16px;
-    text-decoration: none;
+    padding: 0.5em;
 }
 
 .navbar li a:hover {
     background-color: cadetblue;
 }
 
-.active {
+.navbar li .active {
     background-color: steelblue;
+}
+
+.page-navigation {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    float: right;
+}
+
+.page-navigation li {
+    font-size: xx-large;
+}
+
+.page-navigation input {
+    width: 1.5em;
+    height: 1.5em;
+    font-size: xx-large;
+    margin-bottom: 1em;
 }
