@@ -11,14 +11,14 @@
             <option value="not_un"  {% if session['show'] == "not_un" %}    selected {% endif %}>Not Un</option>
         </select>
 
-        <select name="order" onchange="this.form.submit()">
-            <option value="ups"     {% if session['order'] == "ups" %}     selected {% endif %}>Upvotes</option>
-            <option value="name"    {% if session['order'] == "name" %}    selected {% endif %}>Name</option>
+        <select name="order-by" onchange="this.form.submit()">
+            <option value="UPS"     {% if session['order-by'] == "UPS" %}   selected {% endif %}>Upvotes</option>
+            <option value="NAME"    {% if session['order-by'] == "NAME" %}  selected {% endif %}>Name</option>
         </select>
 
-        <select name="asc" onchange="this.form.submit()">
-            <option value="true"     {% if session['asc'] %}       selected {% endif %}>Ascending</option>
-            <option value="false"    {% if not session['asc'] %}   selected {% endif %}>Descending</option>
+        <select name="order" onchange="this.form.submit()">
+            <option value="ASC"     {% if session['order'] == "ASC" %}  selected {% endif %}>Ascending</option>
+            <option value="DESC"    {% if session['order'] == "DESC" %} selected {% endif %}>Descending</option>
         </select>
         <br>
 
@@ -26,7 +26,7 @@
         <input type="text" name="comment" placeholder="Comment..." value="{{ session['comment'] }}">
         <br>
         <input type="text" name="type" placeholder="Type..." value="{{ session['type'] }}">
-        <input type="text" name="oracle_text" placeholder="Oracle Text..." value="{{ session['oracle_text'] }}">
+        <input type="text" name="oracle-text" placeholder="Oracle Text..." value="{{ session['oracle-text'] }}">
         <br>
         <input type="text" class="short" name="power" placeholder="Power..." value="{{ session['power'] }}">
         <input type="text" class="short" name="toughness" placeholder="Toughness..." value="{{ session['toughness'] }}">

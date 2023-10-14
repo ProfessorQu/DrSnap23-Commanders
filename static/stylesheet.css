@@ -111,8 +111,8 @@ select {
     min-width: 0;
 } 
 
-.short {
-    min-width: 10em;
+.update-com .short {
+    min-width: 0;
 }
 
 .navbar {

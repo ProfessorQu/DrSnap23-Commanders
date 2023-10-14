@@ -2,7 +2,6 @@ import time
 import praw
 import sqlite3
 import re
-import json
 
 class Database:
     def open(self):
@@ -106,35 +105,47 @@ class Database:
         self.connection.execute(query, params)
         self.connection.commit()
 
-    def run_select_query(self, query):
-        return self.connection.execute(query).fetchall()
+    def run_select_query(self, query, params=None):
+        if params is None:
+            params = []
+        
+        return self.connection.execute(query, params).fetchall()
 
-    def get_commanders(self, show, order, asc, name, comment, com_type, oracle_text, power, toughness):
+    def get_commanders(self, session):
         query = "SELECT * FROM commanders WHERE ID > -1 "
+        params = []
 
-        if show != "all":
-            query += f"AND is_un = {show == 'un'} "        
-        if name:
-            query += f"AND name LIKE '%{name}%' "
-        if comment:
-            for word in comment.split(" "):
-                query += f"AND author_comment LIKE '%{word}%' "
-        if com_type:
-            query += f"AND type LIKE '%{com_type}%' "
-        if oracle_text:
-            for word in oracle_text.split(" "):
-                query += f"AND oracle_text LIKE '%{word}%' "
-        if power:
-            query += f"AND power = {power} "
-        if toughness:
-            query += f"AND toughness = {toughness} "
+        if session['show'] != "all":
+            query += "AND is_un = ? "
+            params.append(session['show'] == "un")
+        if session['name']:
+            query += "AND name LIKE ? "
+            params.append(f"%{session['name']}%")
+        if session['comment']:
+            for word in session['comment'].split(" "):
+                query += "AND author_comment LIKE ? "
+                params.append(f"%{word}%")
+        if session['type']:
+            query += "AND type LIKE ? "
+            params.append(f"%{session['type']}%")
+        if session['oracle-text']:
+            for word in session['oracle-text'].split(" "):
+                query += "AND oracle_text LIKE ? "
+                params.append(f"%{word}%")
+        if session['power']:
+            query += "AND power = ? "
+            params.append(session['power'])
+        if session['toughness']:
+            query += "AND toughness = ? "
+            params.append(session['toughness'])
 
-        if order is None:
-            query += f"ORDER BY ups {'ASC' if asc else 'DESC'}"
-        else:
-            query += f"ORDER BY {order} {'ASC' if asc else 'DESC'}"
+        if session['order'] == "ASC":
+            query += "ORDER BY ? ASC"
+        if session['order'] == "DESC":
+            query += "ORDER BY ? DESC"
+        params.append(session['order-by'])
 
-        return self.run_select_query(query)
+        return self.run_select_query(query, params)
     
     def update_commander(self, commander_id, inputs):
         is_un = 'is_un' in inputs

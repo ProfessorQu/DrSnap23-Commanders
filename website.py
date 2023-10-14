@@ -10,6 +10,18 @@ app.secret_key = secrets.token_hex()
 logger = logging.getLogger("werkzeug")
 logger.setLevel(logging.ERROR)
 
+SEARCH_VARS = {
+    "show": "all",
+    "order-by": "UPS",
+    "order": "DESC",
+    "name": "",
+    "comment": "",
+    "type": "",
+    "oracle-text": "",
+    "power": "",
+    "toughness": ""
+}
+
 COMMANDERS_PER_PAGE = 30
 
 with Database() as db:
@@ -19,33 +31,14 @@ with Database() as db:
 @app.route("/index", methods=["GET", "POST"])
 def index():
     if request.method == "POST":
-        session['show'] = request.form.get("show")
-        session['order'] = request.form.get("order")
-        session['asc'] = request.form.get("asc") == "true"
-        session['name'] = request.form.get("name")
-        session['comment'] = request.form.get("comment")
-        session['type'] = request.form.get("type")
-        session['oracle_text'] = request.form.get("oracle_text")
-        session['power'] = request.form.get("power")
-        session['toughness'] = request.form.get("toughness")
+        for var in SEARCH_VARS:
+            session[var] = request.form.get(var)
     else:
-        session['show'] = "all"
-        session['order'] = "ups"
-        session['asc'] = False
-        session['name'] = ""
-        session['comment'] = ""
-        session['type'] = ""
-        session['oracle_text'] = ""
-        session['power'] = ""
-        session['toughness'] = ""
+        for var, default in SEARCH_VARS.items():
+            session[var] = default
 
     with Database() as db:
-        commanders = db.get_commanders(
-            session['show'], session['order'], session['asc'],
-            session['name'], session['comment'], session['type'],
-            session['oracle_text'],
-            session['power'], session['toughness']
-        )
+        commanders = db.get_commanders(session)
 
     total_len = len(commanders)
 
