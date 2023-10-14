@@ -30,7 +30,7 @@ with Database() as db:
 @app.route("/", methods=["GET", "POST"])
 @app.route("/index", methods=["GET", "POST"])
 def index():
-    if request.method == "POST":
+    if request.method == "POST" and request.form.get("name") is not None:
         for var in SEARCH_VARS:
             session[var] = request.form.get(var)
     else:
