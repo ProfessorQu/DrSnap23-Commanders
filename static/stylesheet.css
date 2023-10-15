@@ -63,6 +63,7 @@ select {
 
 .single-com-img {
     float: left;
+    margin-right: 1em;
 }
 
 .single-com-img h2 {
@@ -83,10 +84,6 @@ select {
     overflow: hidden;
     margin-left: calc(var(--image-width) + 1em);
     max-width: 50%;
-}
-
-.update-com {
-    margin-left: calc(var(--image-width) + 1em);
 }
 
 .update-com input {
