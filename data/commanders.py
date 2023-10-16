@@ -139,12 +139,12 @@ class Database:
             query += "AND toughness = ? "
             params.append(session['toughness'])
 
-        if session['order'] == "ASC":
-            query += "ORDER BY ? ASC"
-        if session['order'] == "DESC":
-            query += "ORDER BY ? DESC"
-        params.append(session['order-by'])
-
+        if session['order-by'] in ["UPS", "NAME"]:
+            if session['order'] == "ASC":
+                query += f"ORDER BY {session['order-by']} ASC"
+            if session['order'] == "DESC":
+                query += f"ORDER BY {session['order-by']} DESC"
+    
         return self.run_select_query(query, params)
     
     def update_commander(self, commander_id, inputs):

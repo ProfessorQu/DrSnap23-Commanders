@@ -79,7 +79,7 @@ def index():
 
 @app.route("/random")
 def random_commander():
-    commander_id = random.randint(0, all_commanders_len-1)
+    commander_id = random.randint(1, all_commanders_len-1)
     return redirect(url_for("commander", commander_id=commander_id))
 
 @app.route("/about")
