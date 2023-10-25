@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.secret_key = secrets.token_hex()
 
 logger = logging.getLogger("werkzeug")
-# logger.setLevel(logging.ERROR)
+logger.setLevel(logging.ERROR)
 
 SEARCH_VARS = {
     "show": "all",
