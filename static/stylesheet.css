@@ -35,8 +35,6 @@ select {
 .com-img {
     height: var(--image-height);
     width: var(--image-width);
-    /* object-fit: cover;
-    object-position: 0%; */
 }
 
 .com-list {
@@ -82,7 +80,6 @@ select {
 
 .author-comment {
     overflow: hidden;
-    margin-left: calc(var(--image-width) + 1em);
     max-width: 50%;
 }
 
@@ -90,9 +87,14 @@ select {
     min-width: 20em;
 }
 
+.update-com label {
+    margin-top: 1em;
+    white-space: nowrap;
+}
+
 .update-com textarea {
     font-family: system-ui, sans-serif;
-    min-width: 25em;
+    min-width: var(--image-width);
     min-height: 10em;
     font-size: large;
     margin-top: 0.15em;
@@ -113,6 +115,7 @@ select {
 }
 
 .navbar {
+    width: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;

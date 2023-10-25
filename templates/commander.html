@@ -15,8 +15,10 @@
         <input name="mana_cost" type="text" class="short" placeholder="Mana Cost..." value="{{ commander['mana_cost'] }}">
         <br>
         <input name="type" type="text" placeholder="Type..." value="{{ commander['type'] }}">
-        <label>Is Un</label>
-        <input name="is_un" type="checkbox" {% if commander['is_un'] %} checked {% endif %}>
+        <label>
+            Is Un
+            <input name="is_un" type="checkbox" {% if commander['is_un'] %} checked {% endif %}>
+        </label>
         <br>
         <textarea name="oracle_text" placeholder="Oracle Text..." rows="6">{{ commander['oracle_text'] }}</textarea>
         <br>
